@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>NexMeet | Book Ticket</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo">Nex<span>Meet</span></div>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/events-page">Events</a>
+        <a href="/book-ticket">Book Ticket</a>
+    </div>
+</div>
+
+<div class="form-box">
+    <h1>Book Your Ticket</h1>
+
+    <form action="/save-booking" method="post">
+        
+
+        <label>Select Event</label>
+        <select name="eventId" required>
+            <option th:each="event : ${events}"
+        th:value="${event.id}"
+        th:selected="${event.id == selectedEventId}"
+        th:text="${event.eventName + ' - Rs.' + event.ticketPrice}">
+</option>
+        </select>
+
+        <br><br>
+
+        <label>Quantity</label>
+        <input type="number" name="quantity" min="1" required>
+
+        <button type="submit" class="btn">Confirm Booking</button>
+    </form>
+</div>
+
+<div class="footer">
+    <p>© 2026 NexMeet — Connecting People Through Events</p>
+</div>
+
+</body>
+</html>

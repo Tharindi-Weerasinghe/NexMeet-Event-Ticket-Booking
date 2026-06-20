@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Event</title>
+</head>
+<body>
+    <h1>Add New Event</h1>
+
+    <form th:action="@{/save-event}" th:object="${event}" method="post">
+        <label>Event Name:</label>
+        <input type="text" th:field="*{eventName}" required><br><br>
+
+        <label>Location:</label>
+        <input type="text" th:field="*{location}" required><br><br>
+
+        <label>Ticket Price:</label>
+        <input type="number" th:field="*{ticketPrice}" required><br><br>
+
+
+       <label>Image URL</label>
+<input type="text" th:field="*{imageUrl}" placeholder="Paste image URL">
+        <button type="submit">Add Event</button>
+    </form>
+
+    <br>
+    <a href="/admin">Back to Admin</a>
+</body>
+</html>

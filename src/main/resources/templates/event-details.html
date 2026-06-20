@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>NexMeet | Event Details</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo">Nex<span>Meet</span></div>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/events-page">Events</a>
+        <a href="/book-ticket">Book Ticket</a>
+    </div>
+</div>
+
+<div class="container">
+    <div class="card">
+        <img th:src="${event.imageUrl}" class="event-detail-img" alt="Event Image">
+
+        <h1 th:text="${event.eventName}"></h1>
+        <p th:text="${event.description}"></p>
+
+        <p>📍 <span th:text="${event.location}"></span></p>
+
+        <p class="price">Rs. <span th:text="${event.ticketPrice}"></span></p>
+
+        <a href="/book-ticket" class="btn">Book Ticket</a>
+        <a href="/events-page" class="btn">Back to Events</a>
+    </div>
+</div>
+
+
+
+<div class="review-section">
+    <h2>Reviews</h2>
+
+    <div th:if="${#lists.isEmpty(reviews)}">
+        <p class="muted-text">No reviews yet. Be the first to review this event.</p>
+    </div>
+
+    <div class="review-card" th:each="review : ${reviews}">
+        <h3 th:text="${review.reviewerName}"></h3>
+        <p class="stars">⭐ <span th:text="${review.rating}"></span>/5</p>
+        <p th:text="${review.comment}"></p>
+    </div>
+
+   
+
+<div class="footer">
+    <p>© 2026 NexMeet — Connecting People Through Events</p>
+</div>
+
+</body>
+</html>

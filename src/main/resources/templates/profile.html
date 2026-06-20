@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>NexMeet | My Profile</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo">Nex<span>Meet</span></div>
+
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/events-page">Events</a>
+        <a href="/my-tickets">My Tickets</a>
+        <a href="/logout">Logout</a>
+    </div>
+</div>
+
+<div class="profile-container">
+    <div class="profile-card">
+        <div class="profile-avatar"
+             th:text="${#strings.substring(user.name, 0, 1).toUpperCase()}">
+            U
+        </div>
+
+        <h1 th:text="${user.name}">Customer Name</h1>
+        <p class="muted-text">NexMeet Customer</p>
+
+        <div class="profile-details">
+            <p>
+                <strong>Name:</strong>
+                <span th:text="${user.name}"></span>
+            </p>
+
+            <p>
+                <strong>Email:</strong>
+                <span th:text="${user.email}"></span>
+            </p>
+
+            <p>
+                <strong>Account type:</strong>
+                <span th:text="${user.role}"></span>
+            </p>
+        </div>
+
+        <div class="profile-actions">
+            <a href="/my-tickets" class="btn">My Tickets</a>
+            <a href="/events-page" class="btn btn-secondary">Browse Events</a>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <p>© 2026 NexMeet — Connecting People Through Events</p>
+</div>
+
+</body>
+</html>

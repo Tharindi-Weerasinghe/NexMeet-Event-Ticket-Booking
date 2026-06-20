@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>NexMeet | My Tickets</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo">Nex<span>Meet</span></div>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/events-page">Events</a>
+<a href="/my-tickets">My Tickets</a>
+<a href="/profile">My Profile</a>
+<a href="/logout">Logout</a>
+    </div>
+</div>
+
+<div class="container">
+    <div class="section-title">
+        <h2>My Tickets</h2>
+        <p>View your booked event tickets.</p>
+    </div>
+
+    <div th:if="${param.success != null}" class="success-box">
+    Your ticket has been booked successfully!
+</div>
+
+    <div th:if="${param.error != null and param.error[0] == 'already-reviewed'}"
+     class="error-box">
+    You have already reviewed this event.
+</div>
+
+<div th:if="${param.error != null and param.error[0] == 'not-booked'}"
+     class="error-box">
+    You can review only events you have booked.
+</div>
+
+    <div class="grid">
+    <div class="card" th:each="booking : ${bookings}">
+
+        <h3 th:text="${booking.event.eventName}">Event Name</h3>
+
+        <p th:if="${booking.ticketNumber != null}">
+            <strong>Ticket Number:</strong>
+            <span th:text="${booking.ticketNumber}"></span>
+        </p>
+
+        <p th:if="${booking.ticketNumber == null}">
+            <strong>Ticket Number:</strong> Older booking
+        </p>
+
+        <p>
+            <strong>Location:</strong>
+            <span th:text="${booking.event.location}"></span>
+        </p>
+
+        <p>
+            <strong>Quantity:</strong>
+            <span th:text="${booking.quantity}"></span>
+        </p>
+
+        <p class="price">
+            Total: Rs.
+            <span th:text="${booking.quantity * booking.event.ticketPrice}"></span>
+        </p>
+
+        <div class="ticket-actions">
+            <a th:href="@{/ticket/{id}(id=${booking.id})}"
+               class="btn btn-small">
+                View Ticket
+            </a>
+
+            <a th:href="@{/event-details/{id}(id=${booking.event.id})}"
+               class="btn btn-small">
+                Event Details
+            </a>
+
+            <a th:href="@{/review-event/{id}(id=${booking.event.id})}"
+               class="btn btn-small">
+                Review Event
+            </a>
+
+            <a th:href="@{/cancel-ticket/{id}(id=${booking.id})}"
+               class="btn btn-small btn-danger"
+               onclick="return confirm('Are you sure you want to cancel this ticket?')">
+                Cancel Ticket
+            </a>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>NexMeet | Bookings</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo">Nex<span>Meet</span></div>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/events-page">Events</a>
+        <a href="/book-ticket">Book Ticket</a>
+        <a href="/admin" class="admin-btn">Admin</a>
+    </div>
+</div>
+
+<div class="container">
+    <div class="section-title">
+        <h2>Booking Records</h2>
+        <p>View all confirmed event ticket bookings.</p>
+    </div>
+
+    <div th:if="${success}" class="success-box">
+    Booking confirmed successfully!
+</div>
+
+    <div class="grid">
+        <div class="card" th:each="booking : ${bookings}">
+            <div class="card-icon">🎟️</div>
+
+            <h3 th:text="${booking.event.eventName}"></h3>
+
+            <p><strong>Customer:</strong> <span th:text="${booking.user.name}"></span></p>
+            <p><strong>Email:</strong> <span th:text="${booking.user.email}"></span></p>
+            <p><strong>Location:</strong> <span th:text="${booking.event.location}"></span></p>
+            <p><strong>Quantity:</strong> <span th:text="${booking.quantity}"></span></p>
+            <p class="price">Total: Rs. 
+                <span th:text="${booking.quantity * booking.event.ticketPrice}"></span>
+            </p>
+        </div>
+    </div>
+
+    <br>
+    <a href="/" class="btn">Back Home</a>
+</div>
+
+<div class="footer">
+    <p>© 2026 NexMeet — Connecting People Through Events</p>
+</div>
+
+</body>
+</html>

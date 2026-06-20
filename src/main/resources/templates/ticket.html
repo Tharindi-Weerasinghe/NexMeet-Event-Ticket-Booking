@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>NexMeet | Ticket</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="print-ticket">
+    <div class="logo">Nex<span>Meet</span></div>
+
+    <h1>Event Ticket</h1>
+
+    <h2 th:text="${booking.event.eventName}"></h2>
+
+    <p>
+        <strong>Ticket Number:</strong>
+        <span th:text="${booking.ticketNumber}"></span>
+    </p>
+
+    <p>
+        <strong>Customer:</strong>
+        <span th:text="${booking.user.name}"></span>
+    </p>
+
+    <p>
+        <strong>Email:</strong>
+        <span th:text="${booking.user.email}"></span>
+    </p>
+
+    <p>
+        <strong>Location:</strong>
+        <span th:text="${booking.event.location}"></span>
+    </p>
+
+    <p>
+        <strong>Quantity:</strong>
+        <span th:text="${booking.quantity}"></span>
+    </p>
+
+    <p class="price">
+        Total: Rs.
+        <span th:text="${booking.quantity * booking.event.ticketPrice}"></span>
+    </p>
+
+    <div class="ticket-print-actions">
+        <button onclick="window.print()" class="btn">Print Ticket</button>
+        <a href="/my-tickets" class="btn btn-secondary">Back</a>
+    </div>
+</div>
+
+</body>
+</html>

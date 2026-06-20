@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>NexMeet | Admin Dashboard</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo">Nex<span>Meet</span></div>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/events-page">Events</a>
+        <a href="/add-event">Add Event</a>
+        <a href="/bookings-page">Bookings</a>
+    </div>
+</div>
+
+<div class="container">
+    <div class="section-title">
+        <h2>Admin Dashboard</h2>
+        <a href="/admin/events" class="btn">Manage Events</a>
+        <p>Manage events, users and ticket bookings.</p>
+    </div>
+
+    <div class="grid">
+        <div class="card">
+            <div class="card-icon">📅</div>
+            <h3>Total Events</h3>
+            <p class="price" th:text="${totalEvents}"></p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">👥</div>
+            <h3>Total Users</h3>
+            <p class="price" th:text="${totalUsers}"></p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">🎟️</div>
+            <h3>Total Bookings</h3>
+            <p class="price" th:text="${totalBookings}"></p>
+        </div>
+    </div>
+
+    <br><br>
+
+    <a href="/add-event" class="btn">Add Event</a>
+<a href="/bookings-page" class="btn">Manage Bookings</a>
+<a href="/" class="btn">View Customer Website</a>
+</div>
+
+<div class="footer">
+    <p>© 2026 NexMeet — Admin Panel</p>
+</div>
+
+</body>
+</html>

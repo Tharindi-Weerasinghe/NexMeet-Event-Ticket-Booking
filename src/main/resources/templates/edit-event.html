@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>NexMeet | Edit Event</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo">Nex<span>Meet</span></div>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/events-page">Events</a>
+        <a href="/admin" class="admin-btn">Admin</a>
+    </div>
+</div>
+
+<div class="form-box">
+    <h1>Edit Event</h1>
+
+    <form th:action="@{/update-event/{id}(id=${event.id})}" th:object="${event}" method="post">
+        <label>Event Name</label>
+        <input type="text" th:field="*{eventName}" required>
+
+        <label>Location</label>
+        <input type="text" th:field="*{location}" required>
+
+        <label>Ticket Price</label>
+        <input type="number" th:field="*{ticketPrice}" required>
+
+        <label>Description</label>
+        <textarea th:field="*{description}" rows="4" placeholder="Write event description..."></textarea>
+
+        <label>Image URL</label>
+        <input type="text" th:field="*{imageUrl}" placeholder="Paste image URL">
+
+        <button type="submit" class="btn">Update Event</button>
+    </form>
+
+    <br>
+    <a href="/events-page" class="btn">Back to Events</a>
+</div>
+
+<div class="footer">
+    <p>© 2026 NexMeet — Admin Panel</p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>NexMeet | Event Ticket Booking</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo">Nex<span>Meet</span></div>
+
+    <div class="nav-links">
+        <a href="/events-page">Events</a>
+        <a href="/book-ticket">Book Ticket</a>
+
+        <!-- Shown before login -->
+        <a th:if="${session.loggedUser == null}" href="/login">Login</a>
+        <a th:if="${session.loggedUser == null}" href="/register">Register</a>
+
+        <!-- Shown after login -->
+        <a th:if="${session.loggedUser != null}" href="/profile">My Profile</a>
+        <a th:if="${session.loggedUser != null}" href="/my-tickets">My Tickets</a>
+        <a th:if="${session.loggedUser != null}" href="/logout">Logout</a>
+    </div>
+</div>
+
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-badge">Connecting People Through Events</div>
+
+        <h1>Discover Your Next Unforgettable Experience</h1>
+
+        <p>
+            NexMeet helps you explore concerts, conferences, workshops and
+            community events in one simple and beautiful ticket booking platform.
+        </p>
+
+        <a href="/events-page" class="btn btn-light">Explore Events</a>
+    </div>
+</section>
+
+<div class="container">
+    <div class="section-title">
+        <h2>Why Choose NexMeet?</h2>
+        <p>A simple platform for discovering and booking events.</p>
+    </div>
+
+    <div class="grid">
+        <div class="card">
+            <div class="card-icon">🎟️</div>
+            <h3>Easy Ticket Booking</h3>
+            <p>Browse available events and book tickets using a simple process.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">📅</div>
+            <h3>Discover Events</h3>
+            <p>Find concerts, conferences, workshops and other upcoming events.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">👥</div>
+            <h3>Manage Your Tickets</h3>
+            <p>Access your profile and view all your booked tickets in one place.</p>
+        </div>
+    </div>
+</div>
+
+<div class="cta">
+    <h2>Ready to find your next event?</h2>
+    <p>Start browsing upcoming events and reserve your spot today.</p>
+    <a href="/events-page" class="btn btn-light">View Events</a>
+</div>
+
+<div class="footer">
+    <p>© 2026 NexMeet — Connecting People Through Events</p>
+</div>
+
+</body>
+</html>

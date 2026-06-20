@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>NexMeet | Events</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo">Nex<span>Meet</span></div>
+
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/events-page">Events</a>
+        <a href="/book-ticket">Book Ticket</a>
+
+        <a th:if="${session.loggedUser == null}" href="/login">Login</a>
+        <a th:if="${session.loggedUser == null}" href="/register">Register</a>
+
+        <a th:if="${session.loggedUser != null}" href="/profile">My Profile</a>
+        <a th:if="${session.loggedUser != null}" href="/my-tickets">My Tickets</a>
+        <a th:if="${session.loggedUser != null}" href="/logout">Logout</a>
+    </div>
+</div>
+
+<div class="container">
+    <div class="section-title">
+        <h2>Explore Events</h2>
+        <p>Find your next concert, workshop, meetup or conference.</p>
+    </div>
+
+    <form action="/search-events" method="get" class="search-box">
+        <input type="text"
+               name="keyword"
+               placeholder="Search events by name or location..."
+               required>
+
+        <button type="submit" class="btn">Search</button>
+    </form>
+
+    <div th:if="${#lists.isEmpty(events)}" class="section-title">
+        <p>No events were found.</p>
+    </div>
+
+    <div class="grid">
+        <div class="card" th:each="event : ${events}">
+
+            <img th:if="${event.imageUrl != null and !event.imageUrl.isEmpty()}"
+                 th:src="${event.imageUrl}"
+                 class="event-img"
+                 alt="Event image">
+
+            <div class="card-icon">🎫</div>
+
+            <h3 th:text="${event.eventName}"></h3>
+
+            <p>
+                📍 <span th:text="${event.location}"></span>
+            </p>
+
+            <p th:text="${event.description}"></p>
+
+            <p class="price">
+                Rs. <span th:text="${event.ticketPrice}"></span>
+            </p>
+
+            <div class="event-actions">
+                <a th:href="@{/book-ticket(eventId=${event.id})}"
+                   class="btn btn-small">
+                    Book Now
+                </a>
+
+                <a th:href="@{/event-details/{id}(id=${event.id})}"
+                   class="btn btn-small">
+                    View Details
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <p>© 2026 NexMeet — Connecting People Through Events</p>
+</div>
+
+</body>
+</html>
