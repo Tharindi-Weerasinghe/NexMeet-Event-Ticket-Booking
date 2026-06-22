@@ -8,40 +8,89 @@
 
 <div class="navbar">
     <div class="logo">Nex<span>Meet</span></div>
+
     <div class="nav-links">
         <a href="/">Home</a>
         <a href="/events-page">Events</a>
-        <a href="/book-ticket">Book Ticket</a>
+        <a href="/my-tickets">My Tickets</a>
+        <a href="/profile">My Profile</a>
+        <a href="/logout">Logout</a>
     </div>
 </div>
 
-<div class="form-box">
-    <h1>Book Your Ticket</h1>
+<main class="booking-page">
+    <div class="form-box booking-box">
 
-    <form action="/save-booking" method="post">
-        
+        <div class="auth-heading">
+            <h1>Book Your Ticket</h1>
+            <p>Select an available event and enter your ticket quantity.</p>
+        </div>
 
-        <label>Select Event</label>
-        <select name="eventId" required>
-            <option th:each="event : ${events}"
-        th:value="${event.id}"
-        th:selected="${event.id == selectedEventId}"
-        th:text="${event.eventName + ' - Rs.' + event.ticketPrice}">
-</option>
-        </select>
+        <div th:if="${param.error != null
+                     and param.error[0] == 'not-enough-tickets'}"
+             class="error-box">
+            Sorry, there are not enough tickets available.
+        </div>
 
-        <br><br>
+        <div th:if="${param.error != null
+                     and param.error[0] == 'invalid-quantity'}"
+             class="error-box">
+            Please enter a valid ticket quantity.
+        </div>
 
-        <label>Quantity</label>
-        <input type="number" name="quantity" min="1" required>
+        <form action="/save-booking" method="post">
 
-        <button type="submit" class="btn">Confirm Booking</button>
-    </form>
-</div>
+            <label for="eventId">Select Event</label>
 
-<div class="footer">
+            <select id="eventId" name="eventId" required>
+                <option value="" disabled
+                        th:selected="${selectedEventId == null}">
+                    Choose an event
+                </option>
+
+                <option th:each="event : ${events}"
+                        th:value="${event.id}"
+                        th:selected="${event.id == selectedEventId}"
+                        th:disabled="${event.availableTickets == 0
+                                     or (event.eventDateTime != null
+                                     and event.eventDateTime.isBefore(
+                                         T(java.time.LocalDateTime).now()
+                                     ))}"
+                        th:text="${event.eventName
+                                  + ' | Rs. ' + event.ticketPrice
+                                  + ' | ' + event.availableTickets
+                                  + ' tickets available'}">
+                </option>
+            </select>
+
+            <label for="quantity">Ticket Quantity</label>
+
+            <input id="quantity"
+                   type="number"
+                   name="quantity"
+                   min="1"
+                   value="1"
+                   required>
+
+            <p class="booking-note">
+                The final total will depend on the selected event price and
+                ticket quantity.
+            </p>
+
+            <button type="submit" class="btn booking-submit">
+                Confirm Booking
+            </button>
+        </form>
+
+        <a href="/events-page" class="back-link">
+            Back to Events
+        </a>
+    </div>
+</main>
+
+<footer class="footer">
     <p>© 2026 NexMeet — Connecting People Through Events</p>
-</div>
+</footer>
 
 </body>
 </html>

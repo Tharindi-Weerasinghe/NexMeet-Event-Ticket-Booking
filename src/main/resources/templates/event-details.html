@@ -24,6 +24,15 @@
 
         <p>📍 <span th:text="${event.location}"></span></p>
 
+        <p th:if="${event.eventDateTime != null}">
+    <strong>Date and Time:</strong>
+    <span th:text="${#temporals.format(event.eventDateTime, 'dd MMMM yyyy, hh:mm a')}"></span>
+</p>
+
+<p>
+    <strong>Tickets Remaining:</strong>
+    <span th:text="${event.availableTickets}"></span>
+</p>
         <p class="price">Rs. <span th:text="${event.ticketPrice}"></span></p>
 
         <a href="/book-ticket" class="btn">Book Ticket</a>

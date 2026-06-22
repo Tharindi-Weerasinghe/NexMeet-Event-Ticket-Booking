@@ -2,6 +2,7 @@ package com.tharindi.eventticketbooking.model;
 
 import jakarta.persistence.*;
 import java.util.UUID;
+import java.time.LocalDateTime;
 
 @Entity
 public class Booking {
@@ -20,6 +21,10 @@ private String ticketNumber;
 
     @ManyToOne
     private Event event;
+
+    private boolean checkedIn;
+
+    private LocalDateTime checkedInAt;
 
     @PrePersist
 public void generateTicketNumber() {
@@ -65,5 +70,21 @@ public void generateTicketNumber() {
 
     public String getTicketNumber() {
     return ticketNumber;
+}
+
+public boolean isCheckedIn() {
+    return checkedIn;
+}
+
+public void setCheckedIn(boolean checkedIn) {
+    this.checkedIn = checkedIn;
+}
+
+public LocalDateTime getCheckedInAt() {
+    return checkedInAt;
+}
+
+public void setCheckedInAt(LocalDateTime checkedInAt) {
+    this.checkedInAt = checkedInAt;
 }
 }

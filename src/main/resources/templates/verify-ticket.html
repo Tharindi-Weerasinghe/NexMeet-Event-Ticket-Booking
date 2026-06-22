@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>NexMeet | Verify Ticket</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo">Nex<span>Meet</span></div>
+
+    <div class="nav-links">
+        <a href="/admin">Dashboard</a>
+        <a href="/admin/events">Manage Events</a>
+        <a href="/bookings-page">Bookings</a>
+        <a href="/logout">Logout</a>
+    </div>
+</div>
+
+<div class="form-box">
+    <h1>Verify Ticket</h1>
+
+    <form action="/admin/verify-ticket" method="get">
+        <label>Ticket Number</label>
+
+        <input type="text"
+               name="ticketNumber"
+               placeholder="Example: NEX-A83F91B2CD"
+               required>
+
+        <button type="submit" class="btn">Verify</button>
+    </form>
+
+    <div th:if="${verifiedBooking != null}" class="success-box">
+        <h2>Valid Ticket</h2>
+
+        <p>
+            <strong>Ticket:</strong>
+            <span th:text="${verifiedBooking.ticketNumber}"></span>
+        </p>
+
+        <p>
+            <strong>Customer:</strong>
+            <span th:text="${verifiedBooking.user.name}"></span>
+        </p>
+
+        <p>
+            <strong>Event:</strong>
+            <span th:text="${verifiedBooking.event.eventName}"></span>
+        </p>
+
+        <p>
+            <strong>Quantity:</strong>
+            <span th:text="${verifiedBooking.quantity}"></span>
+        </p>
+
+        <p>
+    <strong>Status:</strong>
+
+    <span th:if="${!verifiedBooking.checkedIn}"
+          class="valid-status">
+        VALID - NOT USED
+    </span>
+
+    <span th:if="${verifiedBooking.checkedIn}"
+          class="used-status">
+        ALREADY USED
+    </span>
+</p>
+
+<p th:if="${verifiedBooking.checkedInAt != null}">
+    <strong>Checked in at:</strong>
+    <span th:text="${#temporals.format(
+        verifiedBooking.checkedInAt,
+        'dd MMM yyyy, hh:mm a'
+    )}"></span>
+</p>
+
+<form th:if="${!verifiedBooking.checkedIn}"
+      th:action="@{/admin/check-in/{id}(id=${verifiedBooking.id})}"
+      method="post">
+
+    <button type="submit"
+            class="btn"
+            onclick="return confirm('Check in this ticket?')">
+        Check In Ticket
+    </button>
+</form>
+    </div>
+
+    <div th:if="${param.success != null}" class="success-box">
+    Ticket checked in successfully!
+</div>
+
+<div th:if="${param.error != null}" class="error-box">
+    This ticket has already been used.
+</div>
+
+    <div th:if="${invalidTicket}" class="error-box">
+        Invalid or cancelled ticket.
+    </div>
+</div>
+
+</body>
+</html>

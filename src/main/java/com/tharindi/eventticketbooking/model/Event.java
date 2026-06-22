@@ -1,6 +1,8 @@
 package com.tharindi.eventticketbooking.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 public class Event {
@@ -14,6 +16,11 @@ public class Event {
     private double ticketPrice;
     private String imageUrl;
     private String description;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+private LocalDateTime eventDateTime;
+
+private int availableTickets;
 
     public Event() {
     }
@@ -59,6 +66,22 @@ public void setImageUrl(String imageUrl) {
 
 public void setDescription(String description) {
     this.description = description;
+}
+
+public LocalDateTime getEventDateTime() {
+    return eventDateTime;
+}
+
+public void setEventDateTime(LocalDateTime eventDateTime) {
+    this.eventDateTime = eventDateTime;
+}
+
+public int getAvailableTickets() {
+    return availableTickets;
+}
+
+public void setAvailableTickets(int availableTickets) {
+    this.availableTickets = availableTickets;
 }
 
 }

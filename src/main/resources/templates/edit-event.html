@@ -34,6 +34,17 @@
         <label>Image URL</label>
         <input type="text" th:field="*{imageUrl}" placeholder="Paste image URL">
 
+        <label>Event Date and Time</label>
+<input type="datetime-local"
+       th:field="*{eventDateTime}"
+       required>
+
+<label>Available Tickets</label>
+<input type="number"
+       th:field="*{availableTickets}"
+       min="0"
+       required>
+
         <button type="submit" class="btn">Update Event</button>
     </form>
 

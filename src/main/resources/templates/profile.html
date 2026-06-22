@@ -25,7 +25,11 @@
         </div>
 
         <h1 th:text="${user.name}">Customer Name</h1>
-        <p class="muted-text">NexMeet Customer</p>
+        <p class="muted-text"
+   th:text="${user.role == 'ADMIN'
+             ? 'NexMeet Administrator'
+             : 'NexMeet Customer'}">
+</p>
 
         <div class="profile-details">
             <p>

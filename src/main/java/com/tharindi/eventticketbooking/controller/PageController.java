@@ -14,6 +14,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import java.time.LocalDateTime;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
+
 @Controller
 public class PageController {
 
@@ -166,6 +177,21 @@ public String loginUser(@RequestParam String email,
         }
 
         Event event = eventRepository.findById(eventId).orElseThrow();
+        if (event.getEventDateTime() != null
+        && event.getEventDateTime().isBefore(LocalDateTime.now())) {
+    return "redirect:/events-page?error=event-ended";
+}
+
+        if (quantity < 1) {
+    return "redirect:/book-ticket?error=invalid-quantity";
+}
+
+if (event.getAvailableTickets() < quantity) {
+    return "redirect:/book-ticket?error=not-enough-tickets";
+}
+
+event.setAvailableTickets(event.getAvailableTickets() - quantity);
+eventRepository.save(event);
 
         Booking booking = new Booking();
         booking.setUser(user);
@@ -176,6 +202,31 @@ public String loginUser(@RequestParam String email,
 
         return "redirect:/my-tickets";
     }
+
+    @PostMapping("/admin/check-in/{id}")
+public String checkInTicket(@PathVariable Long id,
+                            HttpSession session) {
+
+    if (!isAdmin(session)) {
+        return "redirect:/login";
+    }
+
+    Booking booking = bookingRepository.findById(id).orElseThrow();
+
+    if (booking.isCheckedIn()) {
+        return "redirect:/admin/verify-ticket?ticketNumber="
+                + booking.getTicketNumber()
+                + "&error=already-used";
+    }
+
+    booking.setCheckedIn(true);
+    booking.setCheckedInAt(LocalDateTime.now());
+    bookingRepository.save(booking);
+
+    return "redirect:/admin/verify-ticket?ticketNumber="
+            + booking.getTicketNumber()
+            + "&success=checked-in";
+}
 
     @GetMapping("/my-tickets")
     public String myTickets(HttpSession session, Model model) {
@@ -204,6 +255,15 @@ public String loginUser(@RequestParam String email,
             return "redirect:/my-tickets";
         }
 
+
+        Event event = booking.getEvent();
+
+        event.setAvailableTickets(
+        event.getAvailableTickets() + booking.getQuantity()
+            );
+
+        eventRepository.save(event);
+
         bookingRepository.deleteById(id);
 
         return "redirect:/my-tickets";
@@ -211,18 +271,21 @@ public String loginUser(@RequestParam String email,
 
     // ================= PROFILE =================
 
-    @GetMapping("/profile")
-    public String profile(HttpSession session, Model model) {
-        User user = (User) session.getAttribute("loggedUser");
+   @GetMapping("/profile")
+public String profile(HttpSession session, Model model) {
+    User user = (User) session.getAttribute("loggedUser");
 
-        if (user == null) {
-            return "redirect:/login";
-        }
-
-        model.addAttribute("user", user);
-
-        return "profile";
+    if (user == null) {
+        return "redirect:/login";
     }
+
+    if ("ADMIN".equals(user.getRole())) {
+        return "redirect:/admin";
+    }
+
+    model.addAttribute("user", user);
+    return "profile";
+}
 
     // ================= REVIEWS =================
 
@@ -342,8 +405,11 @@ public String saveReview(@PathVariable Long eventId,
         event.setTicketPrice(updatedEvent.getTicketPrice());
         event.setDescription(updatedEvent.getDescription());
         event.setImageUrl(updatedEvent.getImageUrl());
+        event.setEventDateTime(updatedEvent.getEventDateTime());
+        event.setAvailableTickets(updatedEvent.getAvailableTickets());
 
         eventRepository.save(event);
+        event.setImageUrl(updatedEvent.getImageUrl());
 
         return "redirect:/admin/events";
     }
@@ -428,6 +494,68 @@ public String viewTicket(@PathVariable Long id,
 
     model.addAttribute("booking", booking);
     return "ticket";
+}
+
+@GetMapping("/ticket/{id}/qr")
+public void ticketQrCode(@PathVariable Long id,
+                         HttpSession session,
+                         HttpServletResponse response)
+        throws IOException, WriterException {
+
+    User user = (User) session.getAttribute("loggedUser");
+
+    if (user == null) {
+        response.sendRedirect("/login");
+        return;
+    }
+
+    Booking booking = bookingRepository.findById(id).orElseThrow();
+
+    if (!booking.getUser().getId().equals(user.getId())) {
+        response.sendRedirect("/my-tickets");
+        return;
+    }
+
+    if (booking.getTicketNumber() == null) {
+        response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        return;
+    }
+
+    QRCodeWriter qrCodeWriter = new QRCodeWriter();
+
+    BitMatrix qrCode = qrCodeWriter.encode(
+            booking.getTicketNumber(),
+            BarcodeFormat.QR_CODE,
+            250,
+            250
+    );
+
+    response.setContentType("image/png");
+    MatrixToImageWriter.writeToStream(
+            qrCode,
+            "PNG",
+            response.getOutputStream()
+    );
+}
+
+@GetMapping("/admin/verify-ticket")
+public String verifyTicketPage(@RequestParam(required = false) String ticketNumber,
+                               HttpSession session,
+                               Model model) {
+
+    if (!isAdmin(session)) {
+        return "redirect:/login";
+    }
+
+    if (ticketNumber != null && !ticketNumber.isBlank()) {
+        bookingRepository.findByTicketNumber(ticketNumber.trim())
+                .ifPresentOrElse(
+                        booking -> model.addAttribute("verifiedBooking", booking),
+                        () -> model.addAttribute("invalidTicket", true)
+                );
+    }
+
+    return "verify-ticket";
 }
 
 }

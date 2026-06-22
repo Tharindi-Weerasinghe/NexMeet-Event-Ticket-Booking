@@ -14,74 +14,168 @@
         <a href="/events-page">Events</a>
         <a href="/book-ticket">Book Ticket</a>
 
-        <a th:if="${session.loggedUser == null}" href="/login">Login</a>
-        <a th:if="${session.loggedUser == null}" href="/register">Register</a>
+        <a th:if="${session.loggedUser == null}"
+           href="/login">
+            Login
+        </a>
 
-        <a th:if="${session.loggedUser != null}" href="/profile">My Profile</a>
-        <a th:if="${session.loggedUser != null}" href="/my-tickets">My Tickets</a>
-        <a th:if="${session.loggedUser != null}" href="/logout">Logout</a>
+        <a th:if="${session.loggedUser == null}"
+           href="/register">
+            Register
+        </a>
+
+        <a th:if="${session.loggedUser != null}"
+           href="/profile">
+            My Profile
+        </a>
+
+        <a th:if="${session.loggedUser != null}"
+           href="/my-tickets">
+            My Tickets
+        </a>
+
+        <a th:if="${session.loggedUser != null}"
+           href="/logout">
+            Logout
+        </a>
     </div>
 </div>
 
-<div class="container">
+<main class="container">
+
     <div class="section-title">
         <h2>Explore Events</h2>
         <p>Find your next concert, workshop, meetup or conference.</p>
     </div>
 
-    <form action="/search-events" method="get" class="search-box">
+    <form action="/search-events"
+          method="get"
+          class="search-box">
+
         <input type="text"
                name="keyword"
                placeholder="Search events by name or location..."
                required>
 
-        <button type="submit" class="btn">Search</button>
+        <button type="submit" class="btn">
+            Search
+        </button>
     </form>
 
-    <div th:if="${#lists.isEmpty(events)}" class="section-title">
-        <p>No events were found.</p>
+    <div th:if="${param.error != null
+                 and param.error[0] == 'event-ended'}"
+         class="error-box">
+        Sorry, this event has already ended.
     </div>
 
-    <div class="grid">
-        <div class="card" th:each="event : ${events}">
+    <div th:if="${#lists.isEmpty(events)}"
+         class="section-title">
 
-            <img th:if="${event.imageUrl != null and !event.imageUrl.isEmpty()}"
+        <p>No events were found.</p>
+
+        <a href="/events-page" class="btn">
+            View All Events
+        </a>
+    </div>
+
+    <div class="grid"
+         th:unless="${#lists.isEmpty(events)}">
+
+        <article class="card"
+                 th:each="event : ${events}">
+
+            <img th:if="${event.imageUrl != null
+                         and !event.imageUrl.isEmpty()}"
                  th:src="${event.imageUrl}"
                  class="event-img"
-                 alt="Event image">
+                 alt="Event image"
+                 onerror="this.style.display='none'">
 
             <div class="card-icon">🎫</div>
 
-            <h3 th:text="${event.eventName}"></h3>
+            <h3 th:text="${event.eventName}">
+                Event Name
+            </h3>
 
             <p>
-                📍 <span th:text="${event.location}"></span>
+                <strong>Location:</strong>
+                <span th:text="${event.location}"></span>
             </p>
 
-            <p th:text="${event.description}"></p>
+            <p th:if="${event.eventDateTime != null}">
+                <strong>Date:</strong>
+
+                <span th:text="${#temporals.format(
+                    event.eventDateTime,
+                    'dd MMM yyyy, hh:mm a'
+                )}">
+                </span>
+            </p>
+
+            <p class="description"
+               th:text="${event.description != null
+                         and !event.description.isEmpty()
+                         ? event.description
+                         : 'More information will be available soon.'}">
+            </p>
 
             <p class="price">
                 Rs. <span th:text="${event.ticketPrice}"></span>
             </p>
 
+            <p th:if="${event.availableTickets > 0}">
+                <strong>Available Tickets:</strong>
+                <span th:text="${event.availableTickets}"></span>
+            </p>
+
+            <p th:if="${event.availableTickets == 0}"
+               class="sold-out">
+                SOLD OUT
+            </p>
+
             <div class="event-actions">
-                <a th:href="@{/book-ticket(eventId=${event.id})}"
+
+                <a th:if="${event.availableTickets > 0
+                           and (event.eventDateTime == null
+                           or event.eventDateTime.isAfter(
+                               T(java.time.LocalDateTime).now()
+                           ))}"
+                   th:href="@{/book-ticket(eventId=${event.id})}"
                    class="btn btn-small">
                     Book Now
                 </a>
+
+                <span th:if="${event.eventDateTime != null
+                              and event.eventDateTime.isBefore(
+                                  T(java.time.LocalDateTime).now()
+                              )}"
+                      class="btn btn-small disabled-btn">
+                    Event Ended
+                </span>
+
+                <span th:if="${event.availableTickets == 0
+                              and (event.eventDateTime == null
+                              or event.eventDateTime.isAfter(
+                                  T(java.time.LocalDateTime).now()
+                              ))}"
+                      class="btn btn-small disabled-btn">
+                    Sold Out
+                </span>
 
                 <a th:href="@{/event-details/{id}(id=${event.id})}"
                    class="btn btn-small">
                     View Details
                 </a>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="footer">
+            </div>
+        </article>
+    </div>
+
+</main>
+
+<footer class="footer">
     <p>© 2026 NexMeet — Connecting People Through Events</p>
-</div>
+</footer>
 
 </body>
 </html>

@@ -56,6 +56,11 @@
             <span th:text="${booking.event.location}"></span>
         </p>
 
+        <p th:if="${booking.event.eventDateTime != null}">
+    <strong>Date:</strong>
+    <span th:text="${#temporals.format(booking.event.eventDateTime, 'dd MMM yyyy, hh:mm a')}"></span>
+</p>
+
         <p>
             <strong>Quantity:</strong>
             <span th:text="${booking.quantity}"></span>
