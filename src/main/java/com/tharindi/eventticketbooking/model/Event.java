@@ -26,7 +26,8 @@ public class Event {
     @Positive(message = "Ticket price must be greater than 0")
     private double ticketPrice;
 
-    @Size(max = 500, message = "Image URL is too long")
+    @Size(max = 2000, message = "Image URL is too long")
+    @Column(length = 2000)
     private String imageUrl;
 
     @Size(max = 1000, message = "Description cannot be longer than 1000 characters")
@@ -43,8 +44,12 @@ public class Event {
     }
 
     public Long getId() {
-        return id;
-    }
+    return id;
+}
+
+public void setId(Long id) {
+    this.id = id;
+}
 
     public String getEventName() {
         return eventName;

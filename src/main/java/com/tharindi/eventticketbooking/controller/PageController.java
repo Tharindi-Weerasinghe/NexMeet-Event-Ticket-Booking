@@ -491,36 +491,36 @@ public class PageController {
     }
 
     @PostMapping("/update-event/{id}")
-    public String updateEventFromForm(@PathVariable Long id,
-                                      @Valid @ModelAttribute("event") Event updatedEvent,
-                                      BindingResult result,
-                                      HttpSession session) {
+public String updateEventFromForm(@PathVariable Long id,
+                                  @Valid @ModelAttribute("event") Event updatedEvent,
+                                  BindingResult result,
+                                  HttpSession session) {
 
-        String accessCheck = adminAccessCheck(session);
+    String accessCheck = adminAccessCheck(session);
 
-        if (accessCheck != null) {
-            return accessCheck;
-        }
-
-        if (result.hasErrors()) {
-            updatedEvent.setId(id);
-            return "edit-event";
-        }
-
-        Event event = eventRepository.findById(id).orElseThrow();
-
-        event.setEventName(updatedEvent.getEventName());
-        event.setLocation(updatedEvent.getLocation());
-        event.setTicketPrice(updatedEvent.getTicketPrice());
-        event.setDescription(updatedEvent.getDescription());
-        event.setImageUrl(updatedEvent.getImageUrl());
-        event.setEventDateTime(updatedEvent.getEventDateTime());
-        event.setAvailableTickets(updatedEvent.getAvailableTickets());
-
-        eventRepository.save(event);
-
-        return "redirect:/admin/events";
+    if (accessCheck != null) {
+        return accessCheck;
     }
+
+    if (result.hasErrors()) {
+        updatedEvent.setId(id);
+        return "edit-event";
+    }
+
+    Event event = eventRepository.findById(id).orElseThrow();
+
+    event.setEventName(updatedEvent.getEventName());
+    event.setLocation(updatedEvent.getLocation());
+    event.setTicketPrice(updatedEvent.getTicketPrice());
+    event.setDescription(updatedEvent.getDescription());
+    event.setImageUrl(updatedEvent.getImageUrl());
+    event.setEventDateTime(updatedEvent.getEventDateTime());
+    event.setAvailableTickets(updatedEvent.getAvailableTickets());
+
+    eventRepository.save(event);
+
+    return "redirect:/admin/events";
+}
 
     @GetMapping("/delete-event/{id}")
     public String deleteEvent(@PathVariable Long id, HttpSession session) {

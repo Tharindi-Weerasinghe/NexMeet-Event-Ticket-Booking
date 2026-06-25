@@ -13,44 +13,116 @@
         <a href="/admin">Dashboard</a>
         <a href="/add-event">Add Event</a>
         <a href="/bookings-page">Bookings</a>
-        <a href="/">Customer Website</a>
+        <a href="/admin/verify-ticket">Verify Ticket</a>
+        <a href="/events-page">Customer Website</a>
+        <a href="/logout">Logout</a>
     </div>
 </div>
 
-<div class="container">
-    <h1>Manage Events</h1>
+<main class="admin-events-page">
 
-    <div class="event-grid">
-        <div class="event-card" th:each="event : ${events}">
+    <div class="admin-page-header">
+        <div>
+            <h1>Manage Events</h1>
+            <p>Add, update, and manage all NexMeet events from one place.</p>
+        </div>
 
-            <img th:src="${event.imageUrl}"
-                 class="event-img"
-                 alt="Event Image">
+        <a href="/add-event" class="btn">
+            + Add New Event
+        </a>
+    </div>
 
-            <h2 th:text="${event.eventName}"></h2>
+    <div th:if="${param.error != null and param.error[0] == 'has-bookings'}"
+         class="error-box">
+        This event cannot be deleted because customers have already booked tickets for it.
+    </div>
 
-            <p th:text="${event.location}"></p>
+    <div th:if="${param.success != null and param.success[0] == 'deleted'}"
+         class="success-box">
+        Event deleted successfully.
+    </div>
 
-            <p class="price">
-                Rs. <span th:text="${event.ticketPrice}"></span>
-            </p>
+    <div th:if="${#lists.isEmpty(events)}" class="empty-state">
+        <h2>No Events Found</h2>
+        <p>You have not added any events yet.</p>
+        <a href="/add-event" class="btn">Add Your First Event</a>
+    </div>
 
-            <div class="event-actions">
-                <a th:href="@{/edit-event/{id}(id=${event.id})}"
-                   class="btn btn-secondary">
-                    Edit
-                </a>
+    <div class="admin-event-grid" th:unless="${#lists.isEmpty(events)}">
 
-                <a th:href="@{/delete-event/{id}(id=${event.id})}"
-                   class="btn btn-danger"
-                   onclick="return confirm('Are you sure you want to delete this event?')">
-                    Delete
-                </a>
+        <div class="admin-event-card" th:each="event : ${events}">
+
+            <div class="admin-event-image-wrap">
+                <img th:if="${event.imageUrl != null and !event.imageUrl.isEmpty()}"
+                     th:src="${event.imageUrl}"
+                     class="admin-event-image"
+                     alt="Event image"
+                     onerror="this.style.display='none'">
+
+                <div th:if="${event.imageUrl == null or event.imageUrl.isEmpty()}"
+                     class="admin-event-placeholder">
+                    🎫
+                </div>
+            </div>
+
+            <div class="admin-event-content">
+                <h2 th:text="${event.eventName}">Event Name</h2>
+
+                <p class="admin-event-location">
+                    📍 <span th:text="${event.location}">Location</span>
+                </p>
+
+                <p th:if="${event.eventDateTime != null}" class="admin-event-date">
+                    🗓
+                    <span th:text="${#temporals.format(event.eventDateTime, 'dd MMM yyyy, hh:mm a')}">
+                        Date
+                    </span>
+                </p>
+
+                <p class="admin-event-description"
+                   th:text="${event.description != null and !event.description.isEmpty()
+                            ? event.description
+                            : 'No description added yet.'}">
+                    Description
+                </p>
+
+                <div class="admin-event-meta">
+                    <span>
+                        Price:
+                        <strong>
+                            Rs. <span th:text="${event.ticketPrice}">0</span>
+                        </strong>
+                    </span>
+
+                    <span>
+                        Tickets:
+                        <strong th:text="${event.availableTickets}">0</strong>
+                    </span>
+                </div>
+
+                <div class="admin-event-actions">
+                    <a th:href="@{/edit-event/{id}(id=${event.id})}"
+                       class="btn admin-edit-btn">
+                        Edit
+                    </a>
+
+                    <a th:href="@{/delete-event/{id}(id=${event.id})}"
+                       class="btn admin-delete-btn"
+                       onclick="return confirm('Are you sure you want to delete this event?');">
+                        Delete
+                    </a>
+                </div>
             </div>
 
         </div>
+
     </div>
-</div>
+
+</main>
+
+<footer class="footer">
+    <p>© 2026 NexMeet — Admin Panel</p>
+</footer>
 
 </body>
 </html>

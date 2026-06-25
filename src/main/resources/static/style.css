@@ -872,3 +872,149 @@ img {
     color: #64748b;
     margin-bottom: 25px;
 }
+.admin-events-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 24px;
+}
+
+.admin-page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 32px;
+}
+
+.admin-page-header h1 {
+    margin: 0 0 8px;
+    font-size: 34px;
+    color: #0f172a;
+}
+
+.admin-page-header p {
+    margin: 0;
+    color: #64748b;
+}
+
+.admin-event-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 28px;
+}
+
+.admin-event-card {
+    background: #ffffff;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    border: 1px solid #e5e7eb;
+}
+
+.admin-event-image-wrap {
+    width: 100%;
+    height: 210px;
+    background: #e5e7eb;
+    overflow: hidden;
+}
+
+.admin-event-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* This fixes huge ugly images */
+.admin-event-card img {
+    max-width: 100%;
+}
+
+.admin-event-placeholder {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    background: linear-gradient(135deg, #dbeafe, #eff6ff);
+}
+
+.admin-event-content {
+    padding: 24px;
+}
+
+.admin-event-content h2 {
+    margin: 0 0 10px;
+    font-size: 22px;
+    color: #0f172a;
+}
+
+.admin-event-location,
+.admin-event-date {
+    margin: 8px 0;
+    color: #475569;
+    font-size: 15px;
+}
+
+.admin-event-description {
+    color: #64748b;
+    line-height: 1.5;
+    min-height: 48px;
+    margin: 16px 0;
+}
+
+.admin-event-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    background: #f8fafc;
+    padding: 14px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    color: #475569;
+}
+
+.admin-event-meta strong {
+    color: #2563eb;
+}
+
+.admin-event-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.admin-edit-btn {
+    background: #0f172a;
+}
+
+.admin-delete-btn {
+    background: #dc2626;
+}
+
+.admin-delete-btn:hover {
+    background: #b91c1c;
+}
+
+.empty-state {
+    background: white;
+    padding: 50px;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.empty-state p {
+    color: #64748b;
+}
+
+@media (max-width: 700px) {
+    .admin-page-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .admin-event-actions {
+        grid-template-columns: 1fr;
+    }
+}
