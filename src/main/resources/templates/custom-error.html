@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>NexMeet | Error</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo">Nex<span>Meet</span></div>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/events-page">Events</a>
+        <a href="/login">Login</a>
+    </div>
+</div>
+
+<div class="error-page">
+    <div class="error-card">
+        <h1 th:text="${title}">Something Went Wrong</h1>
+        <p th:text="${message}">An unexpected error occurred.</p>
+
+        <a href="/" class="btn">Back Home</a>
+        <a href="/events-page" class="btn btn-secondary">Browse Events</a>
+    </div>
+</div>
+
+<div class="footer">
+    <p>© 2026 NexMeet — Connecting People Through Events</p>
+</div>
+
+</body>
+</html>

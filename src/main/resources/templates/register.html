@@ -4,65 +4,34 @@
     <title>NexMeet | Register</title>
     <link rel="stylesheet" href="/style.css">
 </head>
-<body>
+<body class="auth-page">
 
-<div class="navbar">
-    <div class="logo">Nex<span>Meet</span></div>
-    <div class="nav-links">
-        <a href="/">Home</a>
-        <a href="/events-page">Events</a>
+<div class="auth-box">
+    <div class="logo auth-logo">Nex<span>Meet</span></div>
+
+    <h1 class="auth-heading">Create Account</h1>
+
+    <form th:action="@{/register}" th:object="${user}" method="post">
+        <label>Name</label>
+        <input type="text" th:field="*{name}">
+        <p class="error-text" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+
+        <label>Email</label>
+        <input type="email" th:field="*{email}">
+        <p class="error-text" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+
+        <label>Password</label>
+        <input type="password" th:field="*{password}">
+        <p class="error-text" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+
+        <button type="submit" class="btn auth-submit">Register</button>
+    </form>
+
+    <p class="auth-switch">
+        Already have an account?
         <a href="/login">Login</a>
-    </div>
+    </p>
 </div>
-
-<main class="auth-page">
-    <div class="form-box auth-box">
-        <div class="auth-heading">
-            <h1>Create Account</h1>
-            <p>Register to book events and manage your tickets.</p>
-        </div>
-
-        <div th:if="${param.error != null}" class="error-box">
-            This email is already registered. Please log in instead.
-        </div>
-
-        <form action="/register" method="post">
-            <label for="name">Full Name</label>
-            <input id="name"
-                   type="text"
-                   name="name"
-                   placeholder="Enter your full name"
-                   autocomplete="name"
-                   required>
-
-            <label for="email">Email Address</label>
-            <input id="email"
-                   type="email"
-                   name="email"
-                   placeholder="Enter your email"
-                   autocomplete="email"
-                   required>
-
-            <label for="password">Password</label>
-            <input id="password"
-                   type="password"
-                   name="password"
-                   placeholder="At least 8 characters"
-                   minlength="8"
-                   autocomplete="new-password"
-                   required>
-
-            <button type="submit" class="btn auth-submit">
-                Create Account
-            </button>
-        </form>
-
-        <p class="auth-switch">
-            Already have an account?
-            <a href="/login">Login</a>
-        </p>
-    </div>
-</main>
 
 </body>
 </html>

@@ -2,6 +2,7 @@ package com.tharindi.eventticketbooking.controller;
 
 import com.tharindi.eventticketbooking.model.Event;
 import com.tharindi.eventticketbooking.repository.EventRepository;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class EventController {
     }
 
     @PostMapping
-    public Event addEvent(@RequestBody Event event) {
+    public Event addEvent(@Valid @RequestBody Event event) {
         return eventRepository.save(event);
     }
 
@@ -32,7 +33,8 @@ public class EventController {
     }
 
     @PutMapping("/{id}")
-    public Event updateEvent(@PathVariable Long id, @RequestBody Event updatedEvent) {
+    public Event updateEvent(@PathVariable Long id,
+                             @Valid @RequestBody Event updatedEvent) {
         Event event = eventRepository.findById(id).orElseThrow();
 
         event.setEventName(updatedEvent.getEventName());
@@ -40,6 +42,9 @@ public class EventController {
         event.setTicketPrice(updatedEvent.getTicketPrice());
         event.setDescription(updatedEvent.getDescription());
         event.setImageUrl(updatedEvent.getImageUrl());
+        event.setEventDateTime(updatedEvent.getEventDateTime());
+        event.setAvailableTickets(updatedEvent.getAvailableTickets());
+
         return eventRepository.save(event);
     }
 

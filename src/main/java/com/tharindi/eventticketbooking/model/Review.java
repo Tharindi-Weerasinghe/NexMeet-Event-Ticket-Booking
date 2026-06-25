@@ -1,6 +1,10 @@
 package com.tharindi.eventticketbooking.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Review {
@@ -9,11 +13,17 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String reviewerName;
-    private int rating;
+    @NotBlank(message = "Reviewer name is required")
+private String reviewerName;
 
-    @Column(length = 1000)
-    private String comment;
+@Min(value = 1, message = "Rating must be at least 1")
+@Max(value = 5, message = "Rating cannot be more than 5")
+private int rating;
+
+@NotBlank(message = "Comment is required")
+@Size(max = 1000, message = "Comment cannot be longer than 1000 characters")
+@Column(length = 1000)
+private String comment;
 
     @ManyToOne
     private Event event;

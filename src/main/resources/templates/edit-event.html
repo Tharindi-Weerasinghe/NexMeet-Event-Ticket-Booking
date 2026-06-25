@@ -9,9 +9,9 @@
 <div class="navbar">
     <div class="logo">Nex<span>Meet</span></div>
     <div class="nav-links">
-        <a href="/">Home</a>
-        <a href="/events-page">Events</a>
-        <a href="/admin" class="admin-btn">Admin</a>
+        <a href="/admin">Admin Dashboard</a>
+        <a href="/admin/events">Manage Events</a>
+        <a href="/logout">Logout</a>
     </div>
 </div>
 
@@ -20,36 +20,38 @@
 
     <form th:action="@{/update-event/{id}(id=${event.id})}" th:object="${event}" method="post">
         <label>Event Name</label>
-        <input type="text" th:field="*{eventName}" required>
+        <input type="text" th:field="*{eventName}">
+        <p class="error-text" th:if="${#fields.hasErrors('eventName')}" th:errors="*{eventName}"></p>
 
         <label>Location</label>
-        <input type="text" th:field="*{location}" required>
+        <input type="text" th:field="*{location}">
+        <p class="error-text" th:if="${#fields.hasErrors('location')}" th:errors="*{location}"></p>
 
         <label>Ticket Price</label>
-        <input type="number" th:field="*{ticketPrice}" required>
+        <input type="number" step="0.01" th:field="*{ticketPrice}">
+        <p class="error-text" th:if="${#fields.hasErrors('ticketPrice')}" th:errors="*{ticketPrice}"></p>
 
         <label>Description</label>
         <textarea th:field="*{description}" rows="4" placeholder="Write event description..."></textarea>
+        <p class="error-text" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></p>
 
         <label>Image URL</label>
         <input type="text" th:field="*{imageUrl}" placeholder="Paste image URL">
+        <p class="error-text" th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}"></p>
 
         <label>Event Date and Time</label>
-<input type="datetime-local"
-       th:field="*{eventDateTime}"
-       required>
+        <input type="datetime-local" th:field="*{eventDateTime}">
+        <p class="error-text" th:if="${#fields.hasErrors('eventDateTime')}" th:errors="*{eventDateTime}"></p>
 
-<label>Available Tickets</label>
-<input type="number"
-       th:field="*{availableTickets}"
-       min="0"
-       required>
+        <label>Available Tickets</label>
+        <input type="number" th:field="*{availableTickets}" min="0">
+        <p class="error-text" th:if="${#fields.hasErrors('availableTickets')}" th:errors="*{availableTickets}"></p>
 
         <button type="submit" class="btn">Update Event</button>
     </form>
 
     <br>
-    <a href="/events-page" class="btn">Back to Events</a>
+    <a href="/admin/events" class="btn btn-secondary">Back to Manage Events</a>
 </div>
 
 <div class="footer">

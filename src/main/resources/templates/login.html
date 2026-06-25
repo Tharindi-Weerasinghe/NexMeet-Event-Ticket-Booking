@@ -4,60 +4,40 @@
     <title>NexMeet | Login</title>
     <link rel="stylesheet" href="/style.css">
 </head>
-<body>
+<body class="auth-page">
 
-<div class="navbar">
-    <div class="logo">Nex<span>Meet</span></div>
-    <div class="nav-links">
-        <a href="/">Home</a>
-        <a href="/events-page">Events</a>
-        <a href="/register">Register</a>
+<div class="auth-box">
+    <div class="logo auth-logo">Nex<span>Meet</span></div>
+
+    <h1 class="auth-heading">Login</h1>
+
+    <div th:if="${param.error != null and param.error[0] == 'empty'}" class="error-box">
+        Please enter both email and password.
     </div>
+
+    <div th:if="${param.error != null and param.error[0] == 'invalid'}" class="error-box">
+        Invalid email or password. Please try again.
+    </div>
+
+    <div th:if="${param.registered != null}" class="success-box">
+        Registration successful. Please login.
+    </div>
+
+    <form action="/login" method="post">
+        <label>Email</label>
+        <input type="email" name="email">
+
+        <label>Password</label>
+        <input type="password" name="password">
+
+        <button type="submit" class="btn auth-submit">Login</button>
+    </form>
+
+    <p class="auth-switch">
+        New user?
+        <a href="/register">Create account</a>
+    </p>
 </div>
-
-<main class="auth-page">
-    <div class="form-box auth-box">
-        <div class="auth-heading">
-            <h1>Welcome Back</h1>
-            <p>Log in to manage your tickets and bookings.</p>
-        </div>
-
-        <div th:if="${param.error != null}" class="error-box">
-            Invalid email or password. Please try again.
-        </div>
-
-        <div th:if="${param.registered != null}" class="success-box">
-            Registration successful. Please log in.
-        </div>
-
-        <form action="/login" method="post">
-            <label for="email">Email Address</label>
-            <input id="email"
-                   type="email"
-                   name="email"
-                   placeholder="Enter your email"
-                   autocomplete="email"
-                   required>
-
-            <label for="password">Password</label>
-            <input id="password"
-                   type="password"
-                   name="password"
-                   placeholder="Enter your password"
-                   autocomplete="current-password"
-                   required>
-
-            <button type="submit" class="btn auth-submit">
-                Login
-            </button>
-        </form>
-
-        <p class="auth-switch">
-            New to NexMeet?
-            <a href="/register">Create an account</a>
-        </p>
-    </div>
-</main>
 
 </body>
 </html>

@@ -791,3 +791,84 @@ img {
     text-decoration: none;
     font-weight: 600;
 }
+
+.error-text {
+    color: #dc2626;
+    font-size: 14px;
+    margin-top: -10px;
+    margin-bottom: 14px;
+    font-weight: 600;
+}
+
+.auth-page {
+    min-height: 100vh;
+    background: #f8fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.auth-box {
+    width: 100%;
+    max-width: 460px;
+    background: white;
+    padding: 40px;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
+}
+
+.auth-logo {
+    color: #0f172a;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.auth-heading {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.auth-submit {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.auth-switch {
+    text-align: center;
+    margin-top: 22px;
+    color: #64748b;
+}
+
+.auth-switch a {
+    color: #2563eb;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.error-page {
+    min-height: 65vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 20px;
+}
+
+.error-card {
+    max-width: 600px;
+    background: white;
+    padding: 45px;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
+}
+
+.error-card h1 {
+    margin-top: 0;
+    font-size: 36px;
+}
+
+.error-card p {
+    color: #64748b;
+    margin-bottom: 25px;
+}

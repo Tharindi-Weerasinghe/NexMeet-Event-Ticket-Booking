@@ -1,6 +1,9 @@
 package com.tharindi.eventticketbooking.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class User {
@@ -9,11 +12,18 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @NotBlank(message = "Name is required")
+private String name;
 
-    private String email;
-    private String password;
-    private String role;
+@NotBlank(message = "Email is required")
+@Email(message = "Please enter a valid email address")
+private String email;
+
+@NotBlank(message = "Password is required")
+@Size(min = 6, message = "Password must be at least 6 characters")
+private String password;
+
+private String role;
 
     public User() {
     }

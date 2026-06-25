@@ -3,6 +3,7 @@ package com.tharindi.eventticketbooking.model;
 import jakarta.persistence.*;
 import java.util.UUID;
 import java.time.LocalDateTime;
+import jakarta.validation.constraints.Min;
 
 @Entity
 public class Booking {
@@ -14,6 +15,7 @@ public class Booking {
     @Column(unique = true, updatable = false)
 private String ticketNumber;
 
+   @Min(value = 1, message = "Quantity must be at least 1")
     private int quantity;
 
     @ManyToOne
