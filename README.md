@@ -248,4 +248,4 @@ Through this project, I practiced:
 
 **Tharindi Weerasinghe**
 Cybersecurity Undergraduate
-GitHub: [Tharindi-Weerasinghe](https://github.com/Tharindi-Weerasinghe)
+
