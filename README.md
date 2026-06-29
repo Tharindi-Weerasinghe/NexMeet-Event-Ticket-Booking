@@ -1,4 +1,4 @@
-# NexMeet - Event Ticket Booking System
+# NexMeet - Event Ticket Booking Syste
 
 NexMeet is a full-stack event ticket booking web application built with **Java Spring Boot**, **MySQL**, **Spring Data JPA**, **Thymeleaf**, **HTML**, and **CSS**.
 
